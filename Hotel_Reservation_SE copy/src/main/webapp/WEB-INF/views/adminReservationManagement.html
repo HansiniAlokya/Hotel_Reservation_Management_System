@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Reservation Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 5px 10px; margin: 2px; border: none; cursor: pointer; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-info { background-color: #17a2b8; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Reservation Management</h1>
+        <div id="loading">Loading reservations...</div>
+        <div id="error" style="display: none; color: red;"></div>
+        <div id="success" style="display: none; color: green;"></div>
+        
+        <div id="reservations-container" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Reservation No.</th>
+                        <th>Guest Name</th>
+                        <th>Guest Email</th>
+                        <th>Hotel</th>
+                        <th>Check-in Date</th>
+                        <th>Check-out Date</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reservations-tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadReservations() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('success').style.display = 'none';
+                
+                const response = await fetch('/api/reservations/admin/all');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const reservations = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                
+                if (reservations.length === 0) {
+                    document.getElementById('error').textContent = 'No reservations found.';
+                    document.getElementById('error').style.display = 'block';
+                    return;
+                }
+                
+                displayReservations(reservations);
+                
+            } catch (error) {
+                console.error('Error loading reservations:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').textContent = 'Error loading reservations: ' + error.message;
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+        
+        function displayReservations(reservations) {
+            const tbody = document.getElementById('reservations-tbody');
+            tbody.innerHTML = '';
+            
+            reservations.forEach(reservation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reservation.id}</td>
+                    <td>${reservation.reservationNumber}</td>
+                    <td>${reservation.guestName || 'N/A'}</td>
+                    <td>${reservation.guestEmail || 'N/A'}</td>
+                    <td>${reservation.hotelName || 'N/A'}</td>
+                    <td>${formatDate(reservation.checkInDate)}</td>
+                    <td>${formatDate(reservation.checkOutDate)}</td>
+                    <td>$${reservation.totalAmount || '0.00'}</td>
+                    <td><span class="status ${(reservation.status || 'pending').toLowerCase()}">${reservation.status || 'PENDING'}</span></td>
+                    <td>${formatDate(reservation.createdAt)}</td>
+                    <td class="actions">
+                        <button class="btn btn-success" onclick="confirmReservation(${reservation.id})" ${reservation.status === 'CONFIRMED' ? 'disabled' : ''}>✓ Confirm</button>
+                        <button class="btn btn-danger" onclick="cancelReservation(${reservation.id})" ${reservation.status === 'CANCELLED' ? 'disabled' : ''}>✗ Cancel</button>
+                        <button class="btn btn-info" onclick="viewReservation(${reservation.id})">👁 View</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById('reservations-container').style.display = 'block';
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+        
+        async function confirmReservation(id) {
+            if (confirm('Are you sure you want to confirm this reservation?')) {
+                try {
+                    const response = await fetch(`/api/reservations/admin/${id}/confirm`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        showSuccess('Reservation confirmed successfully!');
+                        loadReservations(); // Refresh the list
+                    } else {
+                        const error = await response.text();
+                        showError('Error confirming reservation: ' + error);
+                    }
+                } catch (error) {
+                    showError('Error confirming reservation: ' + error.message);
+                }
+            }
+        }
+        
+        async function cancelReservation(id) {
+            if (confirm('Are you sure you want to cancel this reservation?')) {
+                try {
+                    const response = await fetch(`/api/reservations/admin/${id}/cancel`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        showSuccess('Reservation cancelled successfully!');
+                        loadReservations(); // Refresh the list
+                    } else {
+                        const error = await response.text();
+                        showError('Error cancelling reservation: ' + error);
+                    }
+                } catch (error) {
+                    showError('Error cancelling reservation: ' + error.message);
+                }
+            }
+        }
+        
+        function viewReservation(id) {
+            alert(`Viewing reservation details for ID: ${id}\n\nThis feature can be expanded to show detailed reservation information.`);
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Load reservations when page loads
+        document.addEventListener('DOMContentLoaded', loadReservations);
+    </script>
+</body>
+</html>

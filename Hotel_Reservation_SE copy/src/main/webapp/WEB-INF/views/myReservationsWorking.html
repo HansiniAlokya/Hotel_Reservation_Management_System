@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .reservation-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        .reservation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .reservation-number {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status.confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .reservation-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .detail-value {
+            color: #333;
+            margin-top: 5px;
+        }
+        .no-reservations {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Reservations</h1>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-number">Reservation #39652826-ccf0-408c-b5e4-6e5f40c1c46d</div>
+                <div class="status pending">PENDING</div>
+            </div>
+            
+            <div class="reservation-details">
+                <div class="detail-item">
+                    <div class="detail-label">Hotel</div>
+                    <div class="detail-value">GrandStay Resort</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-in Date</div>
+                    <div class="detail-value">Oct 30, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-out Date</div>
+                    <div class="detail-value">Nov 01, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Total Amount</div>
+                    <div class="detail-value">$200.00</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Name</div>
+                    <div class="detail-value">Test User</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Email</div>
+                    <div class="detail-value">test@example.com</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Created At</div>
+                    <div class="detail-value">Oct 08, 2025 16:25</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-number">Reservation #7771dc16-1152-4118-beed-32c45fdc3fd8</div>
+                <div class="status pending">PENDING</div>
+            </div>
+            
+            <div class="reservation-details">
+                <div class="detail-item">
+                    <div class="detail-label">Hotel</div>
+                    <div class="detail-value">GrandStay Resort</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-in Date</div>
+                    <div class="detail-value">Nov 05, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-out Date</div>
+                    <div class="detail-value">Nov 07, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Total Amount</div>
+                    <div class="detail-value">$200.00</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Name</div>
+                    <div class="detail-value">Test User</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Email</div>
+                    <div class="detail-value">test@example.com</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Created At</div>
+                    <div class="detail-value">Oct 08, 2025 16:27</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-number">Reservation #b0f05ac8-4181-4af7-86e9-0d359cfa3fe5</div>
+                <div class="status pending">PENDING</div>
+            </div>
+            
+            <div class="reservation-details">
+                <div class="detail-item">
+                    <div class="detail-label">Hotel</div>
+                    <div class="detail-value">GrandStay Resort</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-in Date</div>
+                    <div class="detail-value">Nov 10, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-out Date</div>
+                    <div class="detail-value">Nov 12, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Total Amount</div>
+                    <div class="detail-value">$200.00</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Name</div>
+                    <div class="detail-value">Test User</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Email</div>
+                    <div class="detail-value">test@example.com</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Created At</div>
+                    <div class="detail-value">Oct 08, 2025 16:32</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="reservation-header">
+                <div class="reservation-number">Reservation #81089323-47e0-416e-ba65-3644a327cefe</div>
+                <div class="status pending">PENDING</div>
+            </div>
+            
+            <div class="reservation-details">
+                <div class="detail-item">
+                    <div class="detail-label">Hotel</div>
+                    <div class="detail-value">GrandStay Resort</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-in Date</div>
+                    <div class="detail-value">Nov 15, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Check-out Date</div>
+                    <div class="detail-value">Nov 17, 2025</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Total Amount</div>
+                    <div class="detail-value">$200.00</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Name</div>
+                    <div class="detail-value">Test User</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Guest Email</div>
+                    <div class="detail-value">test@example.com</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Created At</div>
+                    <div class="detail-value">Oct 08, 2025 16:33</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

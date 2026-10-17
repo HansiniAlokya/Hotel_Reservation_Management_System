@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Connection Test</title>
+</head>
+<body>
+    <h1>Database Connection Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testEndpoints() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test basic endpoint
+                const response1 = await fetch('/api/events');
+                const data1 = await response1.text();
+                results.innerHTML += '<h3>API Events Response:</h3><pre>' + data1 + '</pre>';
+                
+                // Test upcoming events
+                const response2 = await fetch('/api/events/upcoming');
+                const data2 = await response2.text();
+                results.innerHTML += '<h3>API Upcoming Events Response:</h3><pre>' + data2 + '</pre>';
+                
+                // Test guest browse events
+                const response3 = await fetch('/guest/browse-events');
+                const data3 = await response3.text();
+                results.innerHTML += '<h3>Guest Browse Events Response:</h3><pre>' + data3.substring(0, 1000) + '...</pre>';
+                
+            } catch (error) {
+                results.innerHTML += '<h3>Error:</h3><pre>' + error.message + '</pre>';
+            }
+        }
+        
+        testEndpoints();
+    </script>
+</body>
+</html>

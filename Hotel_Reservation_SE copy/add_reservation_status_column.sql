@@ -1,0 +1,1 @@
+ALTER TABLE reservations ADD COLUMN reservation_status VARCHAR(20) DEFAULT 'PENDING';

@@ -1,0 +1,36 @@
+2025-09-30 22:20:30.698701+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLES" not found (this database is empty); SQL statement:
+select r1_0.id,r1_0.description,r1_0.name from roles r1_0 where r1_0.name=? [42104-232]
+2025-09-30 22:20:30.711052+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLES" not found (this database is empty); SQL statement:
+insert into roles (description,name,id) values (?,?,default) [42104-232]
+2025-09-30 22:20:30.712874+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+select u1_0.id,u1_0.created_at,u1_0.email,u1_0.first_name,u1_0.is_active,u1_0.last_name,u1_0.password,u1_0.phone_number,u1_0.updated_at,u1_0.username from users u1_0 where u1_0.email=? [42104-232]
+2025-09-30 22:20:30.716486+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HOTELS" not found (this database is empty); SQL statement:
+select count(*) from hotels h1_0 [42104-232]
+2025-09-30 22:20:30.717446+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EVENTS" not found (this database is empty); SQL statement:
+select count(*) from events e1_0 [42104-232]
+2025-09-30 22:20:47.913123+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EVENTS" not found (this database is empty); SQL statement:
+select e1_0.event_id,e1_0.created_at,e1_0.description,e1_0.event_date,e1_0.event_name,e1_0.hotel_id,e1_0.is_active,e1_0.location,e1_0.updated_at from events e1_0 [42104-232]
+2025-09-30 22:21:08.504264+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLES" not found (this database is empty); SQL statement:
+select r1_0.id,r1_0.description,r1_0.name from roles r1_0 where r1_0.name=? [42104-232]
+2025-09-30 22:21:08.515164+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROLES" not found (this database is empty); SQL statement:
+insert into roles (description,name,id) values (?,?,default) [42104-232]
+2025-09-30 22:21:08.516701+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+select u1_0.id,u1_0.created_at,u1_0.email,u1_0.first_name,u1_0.is_active,u1_0.last_name,u1_0.password,u1_0.phone_number,u1_0.updated_at,u1_0.username from users u1_0 where u1_0.email=? [42104-232]
+2025-09-30 22:21:08.519683+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HOTELS" not found (this database is empty); SQL statement:
+select count(*) from hotels h1_0 [42104-232]
+2025-09-30 22:21:08.520545+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EVENTS" not found (this database is empty); SQL statement:
+select count(*) from events e1_0 [42104-232]
+2025-09-30 22:21:26.179440+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "EVENTS" not found (this database is empty); SQL statement:
+select e1_0.event_id,e1_0.created_at,e1_0.description,e1_0.event_date,e1_0.event_name,e1_0.hotel_id,e1_0.is_active,e1_0.location,e1_0.updated_at from events e1_0 [42104-232]

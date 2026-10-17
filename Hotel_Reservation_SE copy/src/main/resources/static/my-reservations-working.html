@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations - GrandStay Paradise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop');
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-info h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-pending { background-color: #ffc107; }
+        .status-confirmed { background-color: #28a745; }
+        .status-cancelled { background-color: #dc3545; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge.status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-badge.status-confirmed {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .status-badge.status-cancelled {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .view-details-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .view-details-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 My Reservations</h1>
+            <p>View all your hotel reservations and their current status</p>
+        </div>
+
+        <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+
+        <div class="main-content">
+            <div class="status-info">
+                <h3>Status Information:</h3>
+                <div class="status-item">
+                    <div class="status-dot status-pending"></div>
+                    <span>PENDING - Your reservation is awaiting admin confirmation</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-confirmed"></div>
+                    <span>CONFIRMED - Your reservation has been confirmed by admin</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-cancelled"></div>
+                    <span>CANCELLED - Your reservation has been cancelled by admin</span>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reservation #</th>
+                        <th>Hotel</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RES-001</strong></td>
+                        <td>GrandStay Resort</td>
+                        <td>Oct 30, 2025</td>
+                        <td>Nov 01, 2025</td>
+                        <td><strong>$200.00</strong></td>
+                        <td>
+                            <span class="status-badge status-pending">PENDING</span>
+                        </td>
+                        <td>Oct 08, 2025</td>
+                        <td>
+                            <button onclick="showDetails('RES-001', 'GrandStay Resort', 'Oct 30, 2025', 'Nov 01, 2025', '$200.00', 'PENDING', 'Oct 08, 2025')" 
+                                    class="view-details-btn">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>RES-002</strong></td>
+                        <td>GrandStay Resort</td>
+                        <td>Nov 05, 2025</td>
+                        <td>Nov 07, 2025</td>
+                        <td><strong>$200.00</strong></td>
+                        <td>
+                            <span class="status-badge status-confirmed">CONFIRMED</span>
+                        </td>
+                        <td>Oct 08, 2025</td>
+                        <td>
+                            <button onclick="showDetails('RES-002', 'GrandStay Resort', 'Nov 05, 2025', 'Nov 07, 2025', '$200.00', 'CONFIRMED', 'Oct 08, 2025')" 
+                                    class="view-details-btn">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>RES-003</strong></td>
+                        <td>GrandStay Resort</td>
+                        <td>Nov 10, 2025</td>
+                        <td>Nov 12, 2025</td>
+                        <td><strong>$200.00</strong></td>
+                        <td>
+                            <span class="status-badge status-cancelled">CANCELLED</span>
+                        </td>
+                        <td>Oct 08, 2025</td>
+                        <td>
+                            <button onclick="showDetails('RES-003', 'GrandStay Resort', 'Nov 10, 2025', 'Nov 12, 2025', '$200.00', 'CANCELLED', 'Oct 08, 2025')" 
+                                    class="view-details-btn">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>RES-004</strong></td>
+                        <td>GrandStay Resort</td>
+                        <td>Nov 15, 2025</td>
+                        <td>Nov 17, 2025</td>
+                        <td><strong>$200.00</strong></td>
+                        <td>
+                            <span class="status-badge status-pending">PENDING</span>
+                        </td>
+                        <td>Oct 08, 2025</td>
+                        <td>
+                            <button onclick="showDetails('RES-004', 'GrandStay Resort', 'Nov 15, 2025', 'Nov 17, 2025', '$200.00', 'PENDING', 'Oct 08, 2025')" 
+                                    class="view-details-btn">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(id, reservationNumber, hotelName, checkInDate, checkOutDate, totalAmount, status, createdAt) {
+            alert(`Reservation Details:\n\n` +
+                  `Reservation #: ${reservationNumber}\n` +
+                  `Hotel: ${hotelName}\n` +
+                  `Check-in: ${checkInDate}\n` +
+                  `Check-out: ${checkOutDate}\n` +
+                  `Amount: ${totalAmount}\n` +
+                  `Status: ${status}\n` +
+                  `Created: ${createdAt}`);
+        }
+    </script>
+</body>
+</html>

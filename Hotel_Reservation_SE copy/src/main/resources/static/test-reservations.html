@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        .status-PENDING { background-color: #ffc107; }
+        .status-CONFIRMED { background-color: #28a745; }
+        .status-RESERVED { background-color: #28a745; }
+        .status-CANCELLED { background-color: #dc3545; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { color: red; padding: 20px; background: #ffe6e6; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 My Reservations</h1>
+        <div id="content">
+            <div class="loading">Loading reservations...</div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch reservations from API
+        fetch('/api/test/reservations')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Received data:', data);
+                
+                if (!data.success) {
+                    document.getElementById('content').innerHTML = 
+                        '<div class="error"><strong>Error:</strong> ' + 
+                        (data.error || 'Unknown error') + 
+                        '<br><strong>Type:</strong> ' + (data.errorType || 'N/A') + '</div>';
+                    return;
+                }
+                
+                let html = '<p>User: ' + data.userEmail + ' (ID: ' + data.userId + ')</p>';
+                html += '<p>Total Reservations: ' + data.reservationCount + '</p>';
+                
+                if (data.reservationCount === 0) {
+                    html += '<p>No reservations found.</p>';
+                } else {
+                    html += '<table>';
+                    html += '<tr><th>ID</th><th>Reservation #</th><th>Hotel/Event</th><th>Check-in</th><th>Check-out</th><th>Amount</th><th>Status</th></tr>';
+                    
+                    data.reservations.forEach(r => {
+                        let checkIn = r.checkInDate ? new Date(r.checkInDate).toLocaleDateString() : 'N/A';
+                        let checkOut = r.checkOutDate ? new Date(r.checkOutDate).toLocaleDateString() : 'N/A';
+                        
+                        html += '<tr>';
+                        html += '<td>' + r.id + '</td>';
+                        html += '<td>' + (r.reservationNumber || 'N/A') + '</td>';
+                        html += '<td>' + (r.hotelName || 'N/A') + '</td>';
+                        html += '<td>' + checkIn + '</td>';
+                        html += '<td>' + checkOut + '</td>';
+                        html += '<td>$' + (r.totalAmount || '0.00') + '</td>';
+                        html += '<td><span class="status-badge status-' + (r.status || 'PENDING') + '">' + (r.status || 'PENDING') + '</span></td>';
+                        html += '</tr>';
+                    });
+                    
+                    html += '</table>';
+                }
+                
+                document.getElementById('content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = 
+                    '<div class="error"><strong>Error fetching reservations:</strong> ' + 
+                    error.message + '</div>';
+            });
+    </script>
+</body>
+</html>
+

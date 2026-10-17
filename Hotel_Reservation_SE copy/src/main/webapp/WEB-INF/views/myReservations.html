@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations - GrandStay Paradise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop');
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-info h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-pending { background-color: #ffc107; }
+        .status-confirmed { background-color: #28a745; }
+        .status-cancelled { background-color: #dc3545; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-confirmed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .view-details-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .view-details-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 My Reservations</h1>
+            <p>View all your hotel reservations and their current status</p>
+        </div>
+
+        <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+
+        <div class="main-content">
+            <div class="status-info">
+                <h3>Status Information:</h3>
+                <div class="status-item">
+                    <div class="status-dot status-pending"></div>
+                    <span>PENDING - Your reservation is awaiting admin confirmation</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-confirmed"></div>
+                    <span>CONFIRMED - Your reservation has been confirmed by admin</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-cancelled"></div>
+                    <span>CANCELLED - Your reservation has been cancelled by admin</span>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reservation #</th>
+                        <th>Hotel</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationsTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.8);">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; border: 2px solid rgba(255, 255, 255, 0.3); border-top: 2px solid #fff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                                <span>Loading reservations...</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Sample reservation data (this would come from your database)
+        const sampleReservations = [
+            {
+                id: 1,
+                reservationNumber: "RES-001",
+                hotelName: "GrandStay Paradise Resort",
+                checkInDate: "2024-10-08 14:00",
+                checkOutDate: "2024-10-10 11:00",
+                totalAmount: "300.00",
+                status: "PENDING",
+                createdAt: "2024-10-06 14:00"
+            },
+            {
+                id: 2,
+                reservationNumber: "RES-002",
+                hotelName: "Ocean View Hotel",
+                checkInDate: "2024-10-14 14:00",
+                checkOutDate: "2024-10-16 11:00",
+                totalAmount: "450.00",
+                status: "CONFIRMED",
+                createdAt: "2024-10-05 14:00"
+            },
+            {
+                id: 3,
+                reservationNumber: "RES-003",
+                hotelName: "Mountain Retreat Lodge",
+                checkInDate: "2024-10-21 14:00",
+                checkOutDate: "2024-10-26 11:00",
+                totalAmount: "750.00",
+                status: "CANCELLED",
+                createdAt: "2024-10-04 14:00"
+            }
+        ];
+
+        function loadReservations() {
+            const tbody = document.getElementById('reservationsTableBody');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                if (sampleReservations.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.8);">
+                                <h3 style="color: #fff; margin-bottom: 15px;">No Reservations Found</h3>
+                                <p>You haven't made any reservations yet.</p>
+                                <a href="/make-reservation" style="display: inline-block; margin-top: 15px; padding: 15px 30px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; text-decoration: none; border-radius: 25px; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; transition: all 0.3s;">Make a Reservation</a>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = sampleReservations.map(reservation => `
+                        <tr>
+                            <td><strong>${reservation.reservationNumber}</strong></td>
+                            <td>${reservation.hotelName}</td>
+                            <td>${reservation.checkInDate}</td>
+                            <td>${reservation.checkOutDate}</td>
+                            <td><strong>$${reservation.totalAmount}</strong></td>
+                            <td>
+                                <span class="status-badge status-${reservation.status.toLowerCase()}">${reservation.status}</span>
+                            </td>
+                            <td>${reservation.createdAt}</td>
+                            <td>
+                                <button class="view-details-btn" onclick="showDetails('${reservation.id}', '${reservation.reservationNumber}', '${reservation.hotelName}', '${reservation.checkInDate}', '${reservation.checkOutDate}', '${reservation.totalAmount}', '${reservation.status}', '${reservation.createdAt}')">
+                                    View Details
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            }, 1000);
+        }
+
+        function showDetails(id, reservationNumber, hotelName, checkInDate, checkOutDate, totalAmount, status, createdAt) {
+            alert('Reservation Details:\n\n' +
+                  'ID: ' + id + '\n' +
+                  'Reservation #: ' + reservationNumber + '\n' +
+                  'Hotel: ' + hotelName + '\n' +
+                  'Check-in: ' + checkInDate + '\n' +
+                  'Check-out: ' + checkOutDate + '\n' +
+                  'Amount: $' + totalAmount + '\n' +
+                  'Status: ' + status + '\n' +
+                  'Created: ' + createdAt);
+        }
+
+        // Load reservations when page loads
+        document.addEventListener('DOMContentLoaded', loadReservations);
+    </script>
+</body>
+</html>

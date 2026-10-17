@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Reservations</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+    </style>
+</head>
+<body>
+    <h1>Hotel Reservation System - Test Page</h1>
+    
+    <div class="test-section">
+        <h3>1. Login Test</h3>
+        <button onclick="testLogin()">Login as test@example.com</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Check Reservations</h3>
+        <button onclick="checkReservations()">Check My Reservations</button>
+        <div id="reservationsResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Create Test Reservation</h3>
+        <button onclick="createTestReservation()">Create Test Reservation</button>
+        <div id="createResult" class="result"></div>
+    </div>
+
+    <script>
+        let sessionCookie = '';
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = 'Logging in...';
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'email=test@example.com&password=password123'
+                });
+                
+                if (response.ok) {
+                    // Extract session cookie
+                    const setCookieHeader = response.headers.get('Set-Cookie');
+                    if (setCookieHeader) {
+                        sessionCookie = setCookieHeader.split(';')[0];
+                    }
+                    
+                    resultDiv.innerHTML = '✅ Login successful! Session cookie: ' + sessionCookie;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = '❌ Login failed: ' + response.status;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '❌ Login error: ' + error.message;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function checkReservations() {
+            const resultDiv = document.getElementById('reservationsResult');
+            resultDiv.innerHTML = 'Checking reservations...';
+            
+            try {
+                const response = await fetch('/my-reservations-page', {
+                    headers: {
+                        'Cookie': sessionCookie
+                    }
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    resultDiv.innerHTML = '✅ Reservations page loaded successfully!<br><br>' + 
+                        '<div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">' + 
+                        html + '</div>';
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = '❌ Failed to load reservations: ' + response.status + ' - ' + await response.text();
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '❌ Error checking reservations: ' + error.message;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function createTestReservation() {
+            const resultDiv = document.getElementById('createResult');
+            resultDiv.innerHTML = 'Creating test reservation...';
+            
+            try {
+                const reservationData = {
+                    hotelId: 1,
+                    checkInDate: '2024-10-09',
+                    checkOutDate: '2024-10-11',
+                    numberOfGuests: 2
+                };
+                
+                const response = await fetch('/api/reservations/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': sessionCookie
+                    },
+                    body: JSON.stringify(reservationData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    resultDiv.innerHTML = '✅ Test reservation created successfully!<br><br>' + 
+                        JSON.stringify(result, null, 2);
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = '❌ Failed to create reservation: ' + response.status + ' - ' + await response.text();
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '❌ Error creating reservation: ' + error.message;
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+</html>
